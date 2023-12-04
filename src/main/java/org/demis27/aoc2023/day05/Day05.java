@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Day05 {
-    public long processPartOne(String s) {
+    public long processPartOne(String s) throws IOException {
         process(s);
         return 0;
     }
 
-    public long processPartTwo(String s) {
+    public long processPartTwo(String s) throws IOException {
         process(s);
         return 0;
     }
