@@ -13,11 +13,15 @@ import java.util.stream.Collectors;
 public class Day02 {
 
     public long processPartOne(final String filename) throws IOException {
-        return getLines(filename).stream().filter(l -> l.isValid(12, 13, 14)).collect(Collectors.summarizingInt(l -> l.id)).getSum();
+        long sum = getLines(filename).stream().filter(l -> l.isValid(12, 13, 14)).collect(Collectors.summarizingInt(l -> l.id)).getSum();
+        log.info("Day 02, part 1 : {}", sum);
+        return sum;
     }
 
     public long processPartTwo(final String filename) throws IOException {
-        return getLines(filename).stream().map(l -> l.minimum()).map(p -> p.blue * p.red * p.green).collect(Collectors.summarizingInt(i -> i)).getSum();
+        long sum = getLines(filename).stream().map(l -> l.minimum()).map(p -> p.blue * p.red * p.green).collect(Collectors.summarizingInt(i -> i)).getSum();
+        log.info("Day 02, part 2 : {}", sum);
+        return sum;
     }
 
     private List<Line> getLines(final String filename) throws IOException {
