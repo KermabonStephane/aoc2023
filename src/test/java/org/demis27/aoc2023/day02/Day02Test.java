@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Day02Test {
 
     @Test
-    void day2_part1_sample() throws IOException {
+    void day02_part1_sample() throws IOException {
         Day02 day02 = new Day02();
         long result = day02.processPartOne("day02-part1-sample.txt");
         Assertions.assertEquals(8, result);
