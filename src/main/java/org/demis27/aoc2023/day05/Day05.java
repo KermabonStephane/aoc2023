@@ -1,27 +1,87 @@
 package org.demis27.aoc2023.day05;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+@Slf4j
 public class Day05 {
     public long processPartOne(String s) throws IOException {
-        process(s);
-        return 0;
+        Almanac almanac = process(s, 0);
+        List<Seed> seeds = almanac.getSeeds();
+        List<Long> list = seeds.stream().map(almanac::getFinalDestination).toList();
+
+        List<Long> sortedlist = new ArrayList<>(list);
+
+        Collections.sort(sortedlist);
+
+        return sortedlist.get(0);
     }
 
     public long processPartTwo(String s) throws IOException {
-        process(s);
-        return 0;
+        Almanac almanac = process(s, 1);
+        List<DynamicSeed> seeds = almanac.getDynamicSeeds();
+        long result = Long.MAX_VALUE;
+//        long iterations = seeds.stream().map(seed -> seed.getRange()).collect(Collectors.summarizingLong(l -> l)).getSum();
+//        long iteration = 0L;
+        for (DynamicSeed seed : seeds) {
+            for (long p = seed.getValue(); p < seed.getValue() + seed.getRange(); p++) {
+//                iteration++;
+                //log.info("iteration {} / {} ( {} % )", iteration, iterations, (100 * iteration) / iterations);
+                result = Math.min(result, almanac.getFinalDestination(new Seed(p)));
+            }
+        }
+
+        return result;
     }
 
-    private void process(final String filename) throws IOException {
+    private Almanac process(final String filename, int mode) throws IOException {
+        Almanac almanac = new Almanac();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)))) {
             String line = reader.readLine();
+            int state = -1;
             while (line != null) {
-
+                if (line.startsWith("seeds:")) {
+                    if (mode == 0) {
+                        almanac.setSeeds(Seed.readSeeds(line));
+                    } else {
+                        almanac.setDynamicSeeds(DynamicSeed.read(line));
+                    }
+                } else if (line.startsWith("seed-to-soil map:")) {
+                    state = 0;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("seed-to-soil"));
+                } else if (line.startsWith("soil-to-fertilizer map:")) {
+                    state = 1;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("soil-to-fertilizer"));
+                } else if (line.startsWith("fertilizer-to-water map:")) {
+                    state = 2;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("fertilizer-to-water"));
+                } else if (line.startsWith("water-to-light map:")) {
+                    state = 3;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("water-to-light"));
+                } else if (line.startsWith("light-to-temperature map:")) {
+                    state = 4;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("light-to-temperature"));
+                } else if (line.startsWith("temperature-to-humidity map:")) {
+                    state = 5;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("temperature-to-humidity"));
+                } else if (line.startsWith("humidity-to-location map:")) {
+                    state = 6;
+                    almanac.getSourceToDestinationLists().add(new SourceToDestinationList("humidity-to-location"));
+                } else if (line.trim().isEmpty()) {
+                    state = -1;
+                } else if (state > -1) {
+                    almanac.getSourceToDestinationLists().get(state).getSourceToDestinations().add(SourceToDestination.read(line));
+                }
                 line = reader.readLine();
             }
         }
+        System.out.println(almanac);
+        return almanac;
     }
 }

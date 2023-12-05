@@ -11,27 +11,27 @@ public class Day05Test {
     void day5_part1_sample() throws IOException {
         Day05 day04 = new Day05();
         long result = day04.processPartOne("day05-part1-sample.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(35, result);
     }
 
     @Test
     void day5_part2_sample() throws IOException {
         Day05 day04 = new Day05();
         long result = day04.processPartTwo("day05-part2-sample.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(46, result);
     }
     @Test
     void day5_part1() throws IOException {
         Day05 day04 = new Day05();
         long result = day04.processPartOne("day05.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(579439039, result);
     }
 
     @Test
     void day5_part2() throws IOException {
         Day05 day04 = new Day05();
         long result = day04.processPartTwo("day05.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(7873084, result);
     }
 
 }
