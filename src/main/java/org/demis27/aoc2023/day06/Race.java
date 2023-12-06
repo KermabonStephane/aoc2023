@@ -19,8 +19,6 @@ public class Race {
         this.time = time;
     }
 
-//    private long preparationTime;
-
     public long numerbOfPossibilities() {
         long result = 0;
         for (int i = 1; i < time; i++) {
@@ -36,7 +34,6 @@ public class Race {
         return "Race{" +
                 "time=" + time +
                 ", record=" + record +
-//                ", preparationTime=" + preparationTime +
                 '}';
     }
 }

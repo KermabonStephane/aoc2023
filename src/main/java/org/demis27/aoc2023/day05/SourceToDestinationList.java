@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,11 +52,5 @@ public class SourceToDestinationList {
                 return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
             }
         }
-
-//        Optional<SourceToDestination> first = sourceToDestinations.stream().filter(std -> std.concerned(tmp)).findFirst();
-//        if (first.isPresent() && sourceToDestinations.indexOf(first.get()) > 0) {
-//            Collections.swap(sourceToDestinations, 0, sourceToDestinations.indexOf(first.get()));
-//        }
-//        return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
     }
 }

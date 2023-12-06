@@ -47,7 +47,6 @@ public class Day03 {
 
     private List<EngineSymbol> extractSymbols(List<String> lines) {
         List<EngineSymbol> symbols = new ArrayList<>();
-        // Detect symbols
         for (int l = 0; l < lines.size(); l++) {
             for (int i = 0; i < lines.get(l).length(); i++) {
                 char c = lines.get(l).charAt(i);

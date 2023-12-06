@@ -18,7 +18,7 @@ public class Almanac {
 
     private List<Seed> seeds;
 
-    private List<DynamicSeed> dynamicSeeds;
+    private List<SeedRange> seedRanges;
 
     private List<SourceToDestinationList> sourceToDestinationLists = new ArrayList<>();
 
@@ -35,7 +35,6 @@ public class Almanac {
     }
 
     public long getFinalDestination(long seed) {
-        //log.info("final destination for {}", seed.getValue());
         long tmp =  seed;
         for (SourceToDestinationList std : sourceToDestinationLists) {
             tmp = std.getDestination(tmp);

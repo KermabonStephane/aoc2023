@@ -8,13 +8,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.OptionalLong;
 import java.util.stream.LongStream;
 
 @Slf4j
 public class Day05 {
     public long processPartOne(String s) throws IOException {
-        Almanac almanac = process(s, 0);
+        Almanac almanac = readFile(s, 0);
         List<Seed> seeds = almanac.getSeeds();
         List<Long> list = seeds.stream().map(almanac::getFinalDestination).toList();
 
@@ -26,14 +25,14 @@ public class Day05 {
     }
 
     public long processPartTwo(String s) throws IOException {
-        Almanac almanac = process(s, 1);
-        List<DynamicSeed> seeds = almanac.getDynamicSeeds();
-        return seeds.stream().map(seed -> LongStream.range(seed.getValue(), seed.getValue() + seed.getRange())
+        Almanac almanac = readFile(s, 1);
+        List<SeedRange> seeds = almanac.getSeedRanges();
+        return seeds.stream().map(seed -> LongStream.range(seed.getInitialValue(), seed.getInitialValue() + seed.getRange())
                 .map(almanac::getFinalDestination).min().orElse(Long.MAX_VALUE))
                 .min(Long::compareTo).orElse(Long.MAX_VALUE);
     }
 
-    private Almanac process(final String filename, int mode) throws IOException {
+    private Almanac readFile(final String filename, int mode) throws IOException {
         Almanac almanac = new Almanac();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)))) {
             String line = reader.readLine();
@@ -43,7 +42,7 @@ public class Day05 {
                     if (mode == 0) {
                         almanac.setSeeds(Seed.readSeeds(line));
                     } else {
-                        almanac.setDynamicSeeds(DynamicSeed.read(line));
+                        almanac.setSeedRanges(SeedRange.read(line));
                     }
                 } else if (line.startsWith("seed-to-soil map:")) {
                     state = 0;
