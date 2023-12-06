@@ -1,10 +1,10 @@
-package org.demis27.aoc2023.day00;
+package org.demis27.aoc2023.day07;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Day00 {
+public class Day07 {
     public long processPartOne(String s) throws IOException {
         process(s);
         return 0L;
