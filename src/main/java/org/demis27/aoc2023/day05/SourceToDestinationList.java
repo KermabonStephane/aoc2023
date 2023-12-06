@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class SourceToDestinationList {
 
     private String name;
     private List<SourceToDestination> sourceToDestinations = new ArrayList<>();
+    private SourceToDestination lastSourceToDestination;
 
     public SourceToDestinationList(String name) {
         this.name = name;
@@ -31,7 +33,31 @@ public class SourceToDestinationList {
     }
 
     public long getDestination(long tmp) {
-        Optional<SourceToDestination> first = sourceToDestinations.stream().filter(std -> std.concerned(tmp)).findFirst();
-        return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
+        if (lastSourceToDestination == null) {
+            Optional<SourceToDestination> first = sourceToDestinations.stream().filter(std -> std.concerned(tmp)).findFirst();
+            if (first.isPresent()) {
+                lastSourceToDestination = first.get();
+            }
+            return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
+        }
+        else {
+            if (lastSourceToDestination.concerned(tmp)) {
+                return lastSourceToDestination.getDestination(tmp);
+            }
+            else {
+                lastSourceToDestination = null;
+                Optional<SourceToDestination> first = sourceToDestinations.stream().filter(std -> std.concerned(tmp)).findFirst();
+                if (first.isPresent()) {
+                    lastSourceToDestination = first.get();
+                }
+                return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
+            }
+        }
+
+//        Optional<SourceToDestination> first = sourceToDestinations.stream().filter(std -> std.concerned(tmp)).findFirst();
+//        if (first.isPresent() && sourceToDestinations.indexOf(first.get()) > 0) {
+//            Collections.swap(sourceToDestinations, 0, sourceToDestinations.indexOf(first.get()));
+//        }
+//        return first.map(sourceToDestination -> sourceToDestination.getDestination(tmp)).orElse(tmp);
     }
 }

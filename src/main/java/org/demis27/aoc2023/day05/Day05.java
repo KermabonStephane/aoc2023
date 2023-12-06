@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalLong;
+import java.util.stream.LongStream;
 
 @Slf4j
 public class Day05 {
@@ -26,18 +28,9 @@ public class Day05 {
     public long processPartTwo(String s) throws IOException {
         Almanac almanac = process(s, 1);
         List<DynamicSeed> seeds = almanac.getDynamicSeeds();
-        long result = Long.MAX_VALUE;
-//        long iterations = seeds.stream().map(seed -> seed.getRange()).collect(Collectors.summarizingLong(l -> l)).getSum();
-//        long iteration = 0L;
-        for (DynamicSeed seed : seeds) {
-            for (long p = seed.getValue(); p < seed.getValue() + seed.getRange(); p++) {
-//                iteration++;
-                //log.info("iteration {} / {} ( {} % )", iteration, iterations, (100 * iteration) / iterations);
-                result = Math.min(result, almanac.getFinalDestination(new Seed(p)));
-            }
-        }
-
-        return result;
+        return seeds.stream().map(seed -> LongStream.range(seed.getValue(), seed.getValue() + seed.getRange())
+                .map(almanac::getFinalDestination).min().orElse(Long.MAX_VALUE))
+                .min(Long::compareTo).orElse(Long.MAX_VALUE);
     }
 
     private Almanac process(final String filename, int mode) throws IOException {
@@ -81,7 +74,6 @@ public class Day05 {
                 line = reader.readLine();
             }
         }
-        System.out.println(almanac);
         return almanac;
     }
 }

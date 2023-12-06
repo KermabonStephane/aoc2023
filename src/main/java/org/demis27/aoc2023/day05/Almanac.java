@@ -31,8 +31,12 @@ public class Almanac {
     }
 
     public long getFinalDestination(Seed seed) {
+        return getFinalDestination(seed.getValue());
+    }
+
+    public long getFinalDestination(long seed) {
         //log.info("final destination for {}", seed.getValue());
-        long tmp =  seed.getValue();
+        long tmp =  seed;
         for (SourceToDestinationList std : sourceToDestinationLists) {
             tmp = std.getDestination(tmp);
         }

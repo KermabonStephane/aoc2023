@@ -34,4 +34,10 @@ public class Day05Test {
         Assertions.assertEquals(7873084, result);
     }
 
+    @Test
+    void day05_partial() throws IOException {
+        Day05 day05 = new Day05();
+        long result = day05.processPartTwo("day05-partial.txt");
+        Assertions.assertEquals(248892167, result);
+    }
 }
