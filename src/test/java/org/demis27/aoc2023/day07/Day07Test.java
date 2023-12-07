@@ -19,10 +19,10 @@ public class Day07Test {
         Assertions.assertEquals(Card.THREE, hand.getCards()[3]);
         Assertions.assertEquals(Card.KING, hand.getCards()[4]);
 
-        Assertions.assertEquals(1, hand.getValue());
+        Assertions.assertEquals(HandType.PAIR, hand.getHandType());
 
         hand = new Hand("QKQKQ 765", false);
-        Assertions.assertEquals(4, hand.getValue());
+        Assertions.assertEquals(HandType.FULL_HOUSE, hand.getHandType());
     }
 
     @Test

@@ -17,33 +17,33 @@ public class Hand implements Comparable<Hand> {
 
     private long bid = 0;
 
-    private long value = 0;
+    private HandType handType = HandType.HIGH_CARD;
 
     public Hand(String line, boolean withJoker) {
         String[] split = line.split((" "));
         this.cards = Card.convert(split[0].trim().toCharArray(), withJoker);
         this.bid = Long.parseLong(split[1].trim());
-        this.value = detectValue(cards, withJoker);
+        this.handType = detectValue(cards, withJoker);
     }
 
-    private long detectValue(Card[] cards, boolean jokers) {
+    private HandType detectValue(Card[] cards, boolean jokers) {
         Object[] sortedCards = Arrays.stream(cards).sorted().toArray();
-        int result = 0;
+        HandType result = HandType.HIGH_CARD;
 
         if (detectFive(sortedCards)) {
-            result = 6;
+            result = HandType.FIVE;
         } else if (detectFour(sortedCards)) {
-            result = 5;
+            result = HandType.FOUR;
         } else if (detectFull(sortedCards)) {
-            result = 4;
+            result = HandType.FULL_HOUSE;
         } else if (detectThree(sortedCards)) {
-            result = 3;
+            result = HandType.THREE;
         } else if (detectTwoTwo(sortedCards)) {
-            result = 2;
+            result = HandType.TWO_PAIR;
         } else if (detectTwo(sortedCards)) {
-            result = 1;
+            result = HandType.PAIR;
         } else {
-            result = 0;
+            result = HandType.HIGH_CARD;
         }
 
         if (jokers) {
@@ -52,36 +52,36 @@ public class Hand implements Comparable<Hand> {
                 case 0: break;
                 case 1: {
                     switch (result) {
-                        case 0: result = 1; break;
-                        case 1: result = 3;break;
-                        case 2: result = 4; break;
-                        case 3: result = 5; break;
-                        case 5: result = 6; break;
+                        case HIGH_CARD: result = HandType.PAIR; break;
+                        case PAIR: result = HandType.THREE;break;
+                        case TWO_PAIR: result = HandType.FULL_HOUSE; break;
+                        case THREE: result = HandType.FOUR; break;
+                        case FOUR: result = HandType.FIVE; break;
                         default: break;
                     }
                     break;
                 }
                 case 2: {
                     switch (result) {
-                        case 1: result = 3; break;
-                        case 2: result = 5; break;
-                        case 3: result = 6; break;
-                        case 4: result = 6; break;
+                        case PAIR: result = HandType.THREE; break;
+                        case TWO_PAIR: result = HandType.FOUR; break;
+                        case THREE: result = HandType.FIVE; break;
+                        case FULL_HOUSE: result = HandType.FIVE; break;
                         default: break;
                     }
                     break;
                 }
                 case 3: {
                     switch (result) {
-                        case 3: result = 5; break;
-                        case 4: result = 6; break;
+                        case THREE: result = HandType.FOUR; break;
+                        case FULL_HOUSE: result = HandType.FIVE; break;
                         default: break;
                     }
                     break;
                 }
                 case 4: {
                     switch (result) {
-                        case 5: result = 6; break;
+                        case FOUR: result = HandType.FIVE; break;
                         default: break;
                     }
                     break;
@@ -90,7 +90,7 @@ public class Hand implements Comparable<Hand> {
             }
         }
 
-        return (long)result;
+        return result;
     }
 
     private int numberOfJockers(Card[] cards) {
@@ -140,13 +140,13 @@ public class Hand implements Comparable<Hand> {
         return "Hand{" +
                 "cards=" + Arrays.toString(cards) +
                 ", bid=" + bid +
-                ", value=" + value +
+                ", value=" + handType +
                 '}';
     }
 
     @Override
     public int compareTo(Hand o) {
-        if (this.getValue() == o.getValue()) {
+        if (this.getHandType() == o.getHandType()) {
             if (this.getCards()[0].rank == o.getCards()[0].rank) {
                 if (this.getCards()[1].rank == o.getCards()[1].rank) {
                     if (this.getCards()[2].rank == o.getCards()[2].rank) {
@@ -173,7 +173,7 @@ public class Hand implements Comparable<Hand> {
                 return (int) (this.getCards()[0].rank - o.getCards()[0].rank);
             }
         } else {
-            return (int) (this.getValue() - o.value);
+            return (int) (this.getHandType().value - o.handType.value);
         }
     }
 }
