@@ -1,23 +1,19 @@
 package org.demis27.aoc2023.day07;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Arrays;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Hand implements Comparable<Hand> {
 
-    private Card[] cards = new Card[5];
+    private Card[] cards;
 
-    private long bid = 0;
+    private long bid;
 
-    private HandType handType = HandType.HIGH_CARD;
+    private HandType handType;
 
     public Hand(String line, boolean withJoker) {
         String[] split = line.split((" "));
@@ -39,7 +35,7 @@ public class Hand implements Comparable<Hand> {
         } else if (detectThree(sortedCards)) {
             result = HandType.THREE;
         } else if (detectTwoTwo(sortedCards)) {
-            result = HandType.TWO_PAIR;
+            result = HandType.TWO_PAIRS;
         } else if (detectTwo(sortedCards)) {
             result = HandType.PAIR;
         } else {
@@ -52,7 +48,7 @@ public class Hand implements Comparable<Hand> {
                     switch (result) {
                         case HIGH_CARD -> result = HandType.PAIR;
                         case PAIR -> result = HandType.THREE;
-                        case TWO_PAIR -> result = HandType.FULL_HOUSE;
+                        case TWO_PAIRS -> result = HandType.FULL_HOUSE;
                         case THREE -> result = HandType.FOUR;
                         case FOUR -> result = HandType.FIVE;
                     }
@@ -60,7 +56,7 @@ public class Hand implements Comparable<Hand> {
                 case 2 -> {
                     switch (result) {
                         case PAIR -> result = HandType.THREE;
-                        case TWO_PAIR -> result = HandType.FOUR;
+                        case TWO_PAIRS -> result = HandType.FOUR;
                         case THREE -> result = HandType.FIVE;
                         case FULL_HOUSE -> result = HandType.FIVE;
                     }
