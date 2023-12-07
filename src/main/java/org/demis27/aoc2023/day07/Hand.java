@@ -23,13 +23,13 @@ public class Hand implements Comparable<Hand> {
         String[] split = line.split((" "));
         this.cards = Card.convert(split[0].trim().toCharArray(), withJoker);
         this.bid = Long.parseLong(split[1].trim());
-        this.handType = detectValue(cards, withJoker);
+        this.handType = detectHandType(cards, withJoker);
     }
 
-    private HandType detectValue(Card[] cards, boolean jokers) {
+    private HandType detectHandType(Card[] cards, boolean withJokers) {
         Object[] sortedCards = Arrays.stream(cards).sorted().toArray();
-        HandType result = HandType.HIGH_CARD;
-
+        HandType result;
+        // detect hand type with ordered cards
         if (detectFive(sortedCards)) {
             result = HandType.FIVE;
         } else if (detectFour(sortedCards)) {
@@ -46,84 +46,68 @@ public class Hand implements Comparable<Hand> {
             result = HandType.HIGH_CARD;
         }
 
-        if (jokers) {
-            int jokersNumbers = numberOfJockers(cards);
-            switch (jokersNumbers) {
-                case 0: break;
-                case 1: {
+        if (withJokers) {
+            switch (numberOfJokers(cards)) {
+                case 1 -> {
                     switch (result) {
-                        case HIGH_CARD: result = HandType.PAIR; break;
-                        case PAIR: result = HandType.THREE;break;
-                        case TWO_PAIR: result = HandType.FULL_HOUSE; break;
-                        case THREE: result = HandType.FOUR; break;
-                        case FOUR: result = HandType.FIVE; break;
-                        default: break;
+                        case HIGH_CARD -> result = HandType.PAIR;
+                        case PAIR -> result = HandType.THREE;
+                        case TWO_PAIR -> result = HandType.FULL_HOUSE;
+                        case THREE -> result = HandType.FOUR;
+                        case FOUR -> result = HandType.FIVE;
                     }
-                    break;
                 }
-                case 2: {
+                case 2 -> {
                     switch (result) {
-                        case PAIR: result = HandType.THREE; break;
-                        case TWO_PAIR: result = HandType.FOUR; break;
-                        case THREE: result = HandType.FIVE; break;
-                        case FULL_HOUSE: result = HandType.FIVE; break;
-                        default: break;
+                        case PAIR -> result = HandType.THREE;
+                        case TWO_PAIR -> result = HandType.FOUR;
+                        case THREE -> result = HandType.FIVE;
+                        case FULL_HOUSE -> result = HandType.FIVE;
                     }
-                    break;
                 }
-                case 3: {
+                case 3 -> {
                     switch (result) {
-                        case THREE: result = HandType.FOUR; break;
-                        case FULL_HOUSE: result = HandType.FIVE; break;
-                        default: break;
+                        case THREE -> result = HandType.FOUR;
+                        case FULL_HOUSE -> result = HandType.FIVE;
                     }
-                    break;
                 }
-                case 4: {
+                case 4 -> {
                     switch (result) {
-                        case FOUR: result = HandType.FIVE; break;
-                        default: break;
+                        case FOUR -> result = HandType.FIVE;
                     }
-                    break;
                 }
-                default: break;
             }
         }
 
         return result;
     }
 
-    private int numberOfJockers(Card[] cards) {
+    private int numberOfJokers(Card[] cards) {
         return (int) Arrays.stream(cards).filter(c -> c == Card.JOKER).count();
     }
 
     private boolean detectTwo(Object[] cards) {
-        return (cards[0] == cards[1]) ||
-                (cards[1] == cards[2]) ||
-                (cards[2] == cards[3]) ||
-                (cards[3] == cards[4]);
+        return (cards[0] == cards[1])
+                || (cards[1] == cards[2])
+                || (cards[2] == cards[3])
+                || (cards[3] == cards[4]);
     }
 
     private boolean detectTwoTwo(Object[] cards) {
         return (cards[0] == cards[1] && cards[2] == cards[3])
-                ||
-                (cards[0] == cards[1] && cards[3] == cards[4])
-                ||
-                (cards[1] == cards[2] && cards[3] == cards[4]);
+                || (cards[0] == cards[1] && cards[3] == cards[4])
+                || (cards[1] == cards[2] && cards[3] == cards[4]);
     }
 
     private boolean detectThree(Object[] cards) {
         return ((cards[0] == cards[1] && cards[1] == cards[2])
-                ||
-                (cards[1] == cards[2] && cards[2] == cards[3])
-                ||
-                (cards[2] == cards[3] && cards[3] == cards[4]));
+                || (cards[1] == cards[2] && cards[2] == cards[3])
+                || (cards[2] == cards[3] && cards[3] == cards[4]));
     }
 
     private boolean detectFull(Object[] cards) {
         return ((cards[0] == cards[1] && cards[1] == cards[2]) && (cards[3] == cards[4])
-                ||
-                (cards[0] == cards[1]) && (cards[2] == cards[3] && cards[3] == cards[4]));
+                || (cards[0] == cards[1]) && (cards[2] == cards[3] && cards[3] == cards[4]));
     }
 
     private boolean detectFour(Object[] cards) {
@@ -140,7 +124,7 @@ public class Hand implements Comparable<Hand> {
         return "Hand{" +
                 "cards=" + Arrays.toString(cards) +
                 ", bid=" + bid +
-                ", value=" + handType +
+                ", handType=" + handType +
                 '}';
     }
 
@@ -154,26 +138,23 @@ public class Hand implements Comparable<Hand> {
                             if (this.getCards()[4].rank == o.getCards()[4].rank) {
                                 return 0;
                             } else {
-                                return (int) (this.getCards()[4].rank - o.getCards()[4].rank);
+                                return this.getCards()[4].rank - o.getCards()[4].rank;
                             }
-
                         } else {
-                            return (int) (this.getCards()[3].rank - o.getCards()[3].rank);
+                            return this.getCards()[3].rank - o.getCards()[3].rank;
                         }
-
                     } else {
-                        return (int) (this.getCards()[2].rank - o.getCards()[2].rank);
+                        return this.getCards()[2].rank - o.getCards()[2].rank;
                     }
-
                 } else {
-                    return (int) (this.getCards()[1].rank - o.getCards()[1].rank);
+                    return this.getCards()[1].rank - o.getCards()[1].rank;
                 }
 
             } else {
-                return (int) (this.getCards()[0].rank - o.getCards()[0].rank);
+                return this.getCards()[0].rank - o.getCards()[0].rank;
             }
         } else {
-            return (int) (this.getHandType().value - o.handType.value);
+            return this.getHandType().value - o.handType.value;
         }
     }
 }

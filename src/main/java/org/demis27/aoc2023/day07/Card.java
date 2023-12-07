@@ -16,7 +16,7 @@ public enum Card implements Comparable<Card>{
         this.rank = rank;
     }
 
-    public static Card convert(char value, boolean withJokers) {
+    private static Card convert(char value, boolean withJokers) {
         return Arrays.stream(values())
                 .filter(c -> (!withJokers && c != JOKER) || (withJokers && c != JACK))
                 .filter(c -> c.type == value)
