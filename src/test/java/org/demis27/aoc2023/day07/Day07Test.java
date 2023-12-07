@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,7 @@ public class Day07Test {
 
     @Test
     void detectValue() {
-        Hand hand = new Hand("32T3K 765");
+        Hand hand = new Hand("32T3K 765", false);
         Assertions.assertEquals(765, hand.getBid());
         Assertions.assertEquals(Card.THREE, hand.getCards()[0]);
         Assertions.assertEquals(Card.TWO, hand.getCards()[1]);
@@ -22,15 +21,15 @@ public class Day07Test {
 
         Assertions.assertEquals(1, hand.getValue());
 
-        hand = new Hand("QKQKQ 765");
+        hand = new Hand("QKQKQ 765", false);
         Assertions.assertEquals(4, hand.getValue());
     }
 
     @Test
     void sort() {
-        Hand hand1 = new Hand("KQKQK 765");
-        Hand hand2 = new Hand("33333 765");
-        Hand hand3 = new Hand("22T22 765");
+        Hand hand1 = new Hand("KQKQK 765", false);
+        Hand hand2 = new Hand("33333 765", false);
+        Hand hand3 = new Hand("22T22 765", false);
 
         List<Hand> hands = List.of(hand1, hand2, hand3).stream().collect(Collectors.toList());
 

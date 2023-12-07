@@ -19,36 +19,13 @@ public class Hand implements Comparable<Hand> {
 
     private long value = 0;
 
-    private long rank = 0;
-
-    public Hand(String line) {
+    public Hand(String line, boolean withJoker) {
         String[] split = line.split((" "));
-        String cards = split[0].trim();
-        this.cards = Card.convert(cards.toCharArray(), false);
+        this.cards = Card.convert(split[0].trim().toCharArray(), withJoker);
         this.bid = Long.parseLong(split[1].trim());
-        value = detectValue(this.cards, false);
+        this.value = detectValue(cards, withJoker);
     }
 
-    public Hand(String line, boolean joker) {
-        String[] split = line.split((" "));
-        String cards = split[0].trim();
-        this.cards = Card.convert(cards.toCharArray(), joker);
-        this.bid = Long.parseLong(split[1].trim());
-        value = detectValue(this.cards, joker);
-
-    }
-
-    public Hand(Card[] cards, long bid) {
-        this.cards = cards;
-        this.bid = bid;
-        value = detectValue(cards, false);
-    }
-
-    public Hand(Card[] cards, long bid, boolean jokers) {
-        this.cards = cards;
-        this.bid = bid;
-        value = detectValue(cards, jokers);
-    }
     private long detectValue(Card[] cards, boolean jokers) {
         Object[] sortedCards = Arrays.stream(cards).sorted().toArray();
         int result = 0;
@@ -164,7 +141,6 @@ public class Hand implements Comparable<Hand> {
                 "cards=" + Arrays.toString(cards) +
                 ", bid=" + bid +
                 ", value=" + value +
-                ", rank=" + rank +
                 '}';
     }
 
@@ -200,6 +176,4 @@ public class Hand implements Comparable<Hand> {
             return (int) (this.getValue() - o.value);
         }
     }
-
-
 }
