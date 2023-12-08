@@ -24,9 +24,4 @@ public class PuzzleMap {
     public List<String> getAllStartPositions() {
         return choices.keySet().stream().filter(k -> k.endsWith("A")).sorted().toList();
     }
-
-    public List<String> getAllEndPositions() {
-        return choices.keySet().stream().filter(k -> k.endsWith("Z")).sorted().toList();
-    }
-
 }
