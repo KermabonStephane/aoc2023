@@ -12,7 +12,6 @@ public class Day07 {
         hands.sort(Hand::compareTo);
         long result = 0;
         for (int i = 0; i < hands.size(); i++) {
-            System.out.println(hands.get(i));
             result += (i + 1) * hands.get(i).getBid();
         }
         return result;
@@ -23,7 +22,6 @@ public class Day07 {
         hands.sort(Hand::compareTo);
         long result = 0;
         for (int i = 0; i < hands.size(); i++) {
-            System.out.println(hands.get(i));
             result += (i + 1) * hands.get(i).getBid();
         }
         return result;
