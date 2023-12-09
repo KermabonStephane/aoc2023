@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Getter
 @Setter
@@ -23,33 +24,29 @@ public class HistoryValues {
     }
 
     public Long getPrediction() {
-        List<Long> reduce = values.get(0);
-        while (!isNull(reduce)) {
-            reduce = extracted(reduce);
-            values.add(reduce);
-        }
+        reduceInitialValues();
 
-        for (int i = values.size() - 2; i >= 0; i--) {
-            values.get(i).add(values.get(i+1).get(values.get(i+1).size() - 1) + values.get(i).get(values.get(i).size() -1));
-        }
+        IntStream.iterate(values.size() - 2, i -> i >= 0, i -> i - 1).forEach(i -> values.get(i).add(values.get(i + 1).get(values.get(i + 1).size() - 1) + values.get(i).get(values.get(i).size() - 1)));
 
         return values.get(0).get(values.get(0).size() - 1);
     }
 
-    public Long getPast() {
+    private void reduceInitialValues() {
         List<Long> reduce = values.get(0);
         while (!isNull(reduce)) {
-            reduce = extracted(reduce);
+            reduce = reduceLine(reduce);
             values.add(reduce);
         }
+    }
 
-        for (int i = values.size() - 2; i >= 0; i--) {
-            values.get(i).add(0, - values.get(i+1).get(0) + values.get(i).get(0));
-        }
+    public Long getPast() {
+        reduceInitialValues();
+
+        IntStream.iterate(values.size() - 2, i -> i >= 0, i -> i - 1).forEach(i -> values.get(i).add(0, -values.get(i + 1).get(0) + values.get(i).get(0)));
         return values.get(0).get(0);
     }
 
-    private List<Long> extracted(List<Long> values) {
+    private List<Long> reduceLine(List<Long> values) {
         List<Long> result = new ArrayList<>();
         for (int i = 1; i < values.size(); i++) {
             result.add(values.get(i) - values.get(i - 1));
