@@ -95,7 +95,7 @@ public class Tile {
                     }
                 }
                 case '|' -> {
-                    if (up(tiles, tile).distance > 0) {
+                    if (up(tiles, tile).distance > 0 && !up(tiles, tile).isStart()) {
                         tile.distance =  up(tiles, tile).distance + 1;
                         return down(tiles, tile);
                     }

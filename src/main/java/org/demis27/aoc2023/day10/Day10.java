@@ -14,18 +14,9 @@ public class Day10 {
     public long processPartOne(String s) throws IOException {
         Tile[][] tiles = process(s);
         Tile start = findStart(tiles);
-        boolean notEnd = true;
-        Tile current = start;
-        while (notEnd) {
-            Tile next = Tile.getNext(tiles, current);
-            if (next.equals(start)) {
-                start.setDistance(current.getDistance() + 1);
-            }
-            notEnd = !next.equals(start);
-            current.setNext(next);
-            next.setPrevious(current);
-            current = next;
-        }
+
+        findLoop(tiles, start);
+
         return (start.getDistance()) / 2;
     }
 
@@ -68,7 +59,6 @@ public class Day10 {
                         .replaceAll("F-*J|L-*7|\\|", "W")
                         .replace("WW", "")
                         .trim()
-                        .replace("W", "")
                         .replace("W", "")
                         .length()).sum();
     }
