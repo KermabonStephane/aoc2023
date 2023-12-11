@@ -14,7 +14,6 @@ public class Day10 {
     public long processPartOne(String s) throws IOException {
         Tile[][] tiles = process(s);
         Tile start = findStart(tiles);
-//        System.out.println(start);
         boolean notEnd = true;
         Tile current = start;
         while (notEnd) {
@@ -23,7 +22,8 @@ public class Day10 {
                 start.setDistance(current.getDistance() + 1);
             }
             notEnd = !next.equals(start);
-            System.out.println(current + " " + next);
+            current.setNext(next);
+            next.setPrevious(current);
             current = next;
         }
         return (start.getDistance()) / 2;
@@ -42,34 +42,38 @@ public class Day10 {
     }
 
     public long processPartTwo(String s) throws IOException {
+        // read input
         Tile[][] tiles = process(s);
 
-
         Tile start = findStart(tiles);
-        boolean notEnd = true;
-        Tile current = start;
-        while (notEnd) {
-            Tile next = Tile.getNext(tiles, current);
-            if (next.equals(start)) {
-                start.setDistance(current.getDistance() + 1);
-            }
-            notEnd = !next.equals(start);
-//            System.out.println(current);
-            current.setNext(next);
-            next.setPrevious(current);
-            current = next;
-        }
-/*
+        findLoop(tiles, start);
+        // replace start by right character
+        replaceStart(start);
+        // Clean all tile than not in loop
         for (int x = 0; x < tiles.length; x++) {
             for (int y = 0; y < tiles[0].length; y++) {
-                System.out.print(tiles[x][y].getValue() + " " + tiles[x][y].getDistance());
+                Tile tile = tiles[x][y];
+                if (tile.getDistance() == 0) {
+                    tile.setValue(' ');
+                }
             }
-            System.out.println("");
         }
-*/
+        // Calculate Inside tiles
+        return Arrays.stream(tiles)
+                .mapToLong(tile -> Arrays.stream(tile)
+                        .map(c -> String.valueOf(c.getValue()))
+                        .reduce("", (a, b) -> a + b)
+                        .trim()
+                        .replaceAll("F-*7|L-*J", "")
+                        .replaceAll("F-*J|L-*7|\\|", "W")
+                        .replace("WW", "")
+                        .trim()
+                        .replace("W", "")
+                        .replace("W", "")
+                        .length()).sum();
+    }
 
-        System.out.println((start.getDistance()) / 2);
-
+    private static void replaceStart(Tile start) {
         if (((start.getPrevious().getX() == start.getX() && start.getPrevious().getY() == start.getY() - 1)
                 && (start.getNext().getY() == start.getY() && start.getNext().getX() == start.getX() - 1))
                 || ((start.getNext().getX() == start.getX() && start.getNext().getY() == start.getY() - 1)
@@ -98,42 +102,21 @@ public class Day10 {
         } else {
             start.setValue('F');
         }
+    }
 
-        for (int x = 0; x < tiles.length; x++) {
-            for (int y = 0; y < tiles[0].length; y++) {
-                Tile tile = tiles[x][y];
-                if (tile.getDistance() == 0) {
-                    tile.setValue(' ');
-                }
+    private static void findLoop(Tile[][] tiles, Tile start) {
+        boolean notEnd = true;
+        Tile current = start;
+        while (notEnd) {
+            Tile next = Tile.getNext(tiles, current);
+            if (next.equals(start)) {
+                start.setDistance(current.getDistance() + 1);
             }
+            notEnd = !next.equals(start);
+            current.setNext(next);
+            next.setPrevious(current);
+            current = next;
         }
-
-        long count = 0;
-        List<String> strings = new ArrayList<>();
-        for (int x = 0; x < tiles.length; x++) {
-            String line = new String(Arrays.stream(tiles[x]).map(c -> String.valueOf(c.getValue())).reduce("", (a, b) -> a + b)).trim();
-            line = line.replaceAll("F-*7", "");
-            line = line.replaceAll("F-*J", "O");
-            line = line.replaceAll("L-*J", "");
-            line = line.replaceAll("L-*7", "O");
-            line = line.replaceAll("\\|", "O");
-            line = line.trim();
-            line = line.replaceAll("OO", "");
-            line = line.trim();
-            strings.add(line);
-            System.out.println(x + " " + line);
-            count += line.trim().replaceAll("O", "").length();
-        }
-
-        for (int x = 0; x < tiles.length; x++) {
-//            System.out.print(x + " ");
-            for (int y = 0; y < tiles[0].length; y++) {
-                System.out.print(tiles[x][y].getValue());
-            }
-            System.out.println("");
-        }
-
-        return count;
     }
 
     private Tile[][] process(final String filename) throws IOException {
