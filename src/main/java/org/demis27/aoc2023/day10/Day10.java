@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day10 {
     public long processPartOne(String s) throws IOException {
@@ -97,8 +99,6 @@ public class Day10 {
             start.setValue('F');
         }
 
-        boolean inside = false;
-        long count = 0;
         for (int x = 0; x < tiles.length; x++) {
             for (int y = 0; y < tiles[0].length; y++) {
                 Tile tile = tiles[x][y];
@@ -108,24 +108,25 @@ public class Day10 {
             }
         }
 
+        long count = 0;
         List<String> strings = new ArrayList<>();
         for (int x = 0; x < tiles.length; x++) {
-            String string = "";
-            for (int y = 0; y < tiles[0].length; y++) {
-                string = string + (tiles[x][y].getValue());
-            }
-            strings.add(string.trim().replace("F7", "")
-                    .replace("F-7", "")
-                    .replace("F--7", "")
-                    .replace("FJ|", "")
-                    .replace("L7|", "")
-                    .trim());
-
+            String line = new String(Arrays.stream(tiles[x]).map(c -> String.valueOf(c.getValue())).reduce("", (a, b) -> a + b)).trim();
+            line = line.replaceAll("F-*7", "");
+            line = line.replaceAll("F-*J", "O");
+            line = line.replaceAll("L-*J", "");
+            line = line.replaceAll("L-*7", "O");
+            line = line.replaceAll("\\|", "O");
+            line = line.trim();
+            line = line.replaceAll("OO", "");
+            line = line.trim();
+            strings.add(line);
+            System.out.println(x + " " + line);
+            count += line.trim().replaceAll("O", "").length();
         }
 
-        strings.forEach(string -> System.out.println(string));
-
         for (int x = 0; x < tiles.length; x++) {
+//            System.out.print(x + " ");
             for (int y = 0; y < tiles[0].length; y++) {
                 System.out.print(tiles[x][y].getValue());
             }
