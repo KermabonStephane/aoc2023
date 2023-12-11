@@ -64,7 +64,7 @@ public class Tile {
                     }
                 }
             }
-            if (tile.x != tiles.length -1) {
+            if (tile.x != tiles.length - 1) {
                 switch (down(tiles, tile).value) {
                     case '|', 'J', 'L': {
                         return down(tiles, tile);
@@ -81,25 +81,19 @@ public class Tile {
         } else {
             switch (tile.value) {
                 case 'L' -> {
-                    if (tile.x != 0) {
-                        if (up(tiles, tile).distance > 0 ) {
-                            tile.distance = up(tiles, tile).distance + 1;
-                            return right(tiles, tile);
-                        } else {
-                            tile.distance = right(tiles, tile).distance + 1;
-                            return up(tiles, tile);
-                        }
-                    }
-                    else {
-                        tile.value = '.';
+                    if (up(tiles, tile).distance > 0) {
+                        tile.distance = up(tiles, tile).distance + 1;
+                        return right(tiles, tile);
+                    } else {
+                        tile.distance = right(tiles, tile).distance + 1;
+                        return up(tiles, tile);
                     }
                 }
                 case '|' -> {
                     if (up(tiles, tile).distance > 0 && !up(tiles, tile).isStart()) {
-                        tile.distance =  up(tiles, tile).distance + 1;
+                        tile.distance = up(tiles, tile).distance + 1;
                         return down(tiles, tile);
-                    }
-                    else {
+                    } else {
                         tile.distance = down(tiles, tile).distance + 1;
                         return up(tiles, tile);
                     }
@@ -108,8 +102,7 @@ public class Tile {
                     if (left(tiles, tile).distance > 0) {
                         tile.distance = left(tiles, tile).distance + 1;
                         return right(tiles, tile);
-                    }
-                    else {
+                    } else {
                         tile.distance = right(tiles, tile).distance + 1;
                         return left(tiles, tile);
                     }
@@ -118,8 +111,7 @@ public class Tile {
                     if (up(tiles, tile).distance > 0) {
                         tile.distance = up(tiles, tile).distance + 1;
                         return left(tiles, tile);
-                    }
-                    else {
+                    } else {
                         tile.distance = left(tiles, tile).distance + 1;
                         return up(tiles, tile);
                     }
@@ -128,8 +120,7 @@ public class Tile {
                     if (left(tiles, tile).distance > 0) {
                         tile.distance = left(tiles, tile).distance + 1;
                         return down(tiles, tile);
-                    }
-                    else {
+                    } else {
                         tile.distance = down(tiles, tile).distance + 1;
                         return left(tiles, tile);
                     }
@@ -138,24 +129,25 @@ public class Tile {
                     if (right(tiles, tile).distance > 0) {
                         tile.distance = right(tiles, tile).distance + 1;
                         return down(tiles, tile);
-                    }
-                    else {
+                    } else {
                         tile.distance = down(tiles, tile).distance + 1;
                         return right(tiles, tile);
                     }
                 }
-                default -> {return null;}
+                default -> {
+                    return null;
+                }
             }
         }
         return null;
     }
 
     private static Tile left(Tile[][] tiles, Tile tile) {
-        return tiles[tile.x][tile.y-1];
+        return tiles[tile.x][tile.y - 1];
     }
 
     private static Tile down(Tile[][] tiles, Tile tile) {
-        return tiles[tile.x+1][tile.y];
+        return tiles[tile.x + 1][tile.y];
     }
 
     private static Tile right(Tile[][] tiles, Tile tile) {
@@ -163,7 +155,7 @@ public class Tile {
     }
 
     private static Tile up(Tile[][] tiles, Tile tile) {
-        return tiles[tile.x-1][tile.y];
+        return tiles[tile.x - 1][tile.y];
     }
 
 }
