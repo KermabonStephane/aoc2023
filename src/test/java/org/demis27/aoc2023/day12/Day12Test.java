@@ -11,20 +11,20 @@ public class Day12Test {
     void day12_part1_sample() throws IOException {
         Day12 day12 = new Day12();
         long result = day12.processPartOne("day12-part1-sample.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(21, result);
     }
 
     @Test
     void day12_part2_sample() throws IOException {
         Day12 day12 = new Day12();
         long result = day12.processPartTwo("day12-part2-sample.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(525152, result);
     }
     @Test
     void day12_part1() throws IOException {
         Day12 day12 = new Day12();
         long result = day12.processPartOne("day12.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(7732, result);
     }
 
     @Test
