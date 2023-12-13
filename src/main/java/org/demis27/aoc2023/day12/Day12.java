@@ -15,7 +15,7 @@ public class Day12 {
 
     public long processPartTwo(String s) throws IOException {
         List<ConditionRecord> conditionRecords = process(s);
-        return conditionRecords.stream().flatMap(c -> c.transform().generateAllPossibilities().stream()).filter(c -> c.match()).count();
+        return conditionRecords.stream().flatMap(c -> c.transform().generateAllPossibilities().stream()).count();
     }
 
     private List<ConditionRecord> process(final String filename) throws IOException {

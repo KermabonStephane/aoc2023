@@ -40,11 +40,34 @@ public class ConditionRecord {
         this(records, format, false);
     }
 
+    public boolean partialMatch() {
+        String startRecord = records.substring(0, records.indexOf('?') >= 0 ? records.indexOf('?') : records.length());
+        String[] split = startRecord.split("\\.");
+        split = Arrays.stream(split).filter(s -> !s.isEmpty()).toArray(String[]::new);
+
+        boolean result = true;
+        if (split.length > format.length) {
+//            //System.out.println("false " + records);
+            return false;
+        }
+        for (int i = 0; i < split.length; i++) {
+            if (split[i].length() > format[i]) {
+//                //System.out.println("false " + records);
+                return false;
+            }
+            result = result && (split[i].length() <= format[i]);
+        }
+        //System.out.println(result + " " + records);
+        return result;
+    }
+
     public boolean match() {
         if (records.indexOf('?') >= 0) {
+            //System.out.println(false + " " + records);
             return false;
         }
         if (records.replaceAll("\\.", "").length() != neededHashTag) {
+            //System.out.println(false + " " + records);
             return false;
         }
         String[] split = records
@@ -59,12 +82,14 @@ public class ConditionRecord {
                 .split("\\.", -1);
         split = Arrays.stream(split).filter(s -> !s.isEmpty()).toArray(String[]::new);
         if (split.length != format.length) {
+            //System.out.println(false + " " + records);
             return false;
         } else {
             boolean result = true;
             for (int i = 0; i < split.length; i++) {
                 result = result && (split[i].length() == format[i]);
             }
+            //System.out.println(result + " " + records);
             return result;
         }
     }
@@ -85,24 +110,32 @@ public class ConditionRecord {
     }
 
     public List<ConditionRecord> generateAllPossibilities() {
-        return recursiveGenerateAllPossibilities(pattern);
+        //System.out.println("start " + records);
+        List<ConditionRecord> conditionRecords = recursiveGenerateAllPossibilities(pattern);
+        return conditionRecords;
     }
 
     public List<ConditionRecord> recursiveGenerateAllPossibilities(Pattern pattern) {
-        if (!pattern.matcher(records).find()) {
-            return Collections.emptyList();
-        }
+//        System.out.print("*");
         if (records.indexOf('?') < 0) {
-            return List.of(this);
+            if (match()) {
+                return List.of(this);
+            }
+            else {
+                return Collections.emptyList();
+            }
+        }
+        if (!partialMatch()) {
+            return Collections.emptyList();
         }
         if (records.chars().filter(c -> c == '#').count() > neededHashTag) {
             return Collections.emptyList();
         } else {
             List<ConditionRecord> result = new ArrayList<>();
-            List<ConditionRecord> first = (new ConditionRecord(records.replaceFirst("\\?", "."), format)).recursiveGenerateAllPossibilities(pattern);
             List<ConditionRecord> second = (new ConditionRecord(records.replaceFirst("\\?", "#"), format)).recursiveGenerateAllPossibilities(pattern);
-            result.addAll(second);
+            List<ConditionRecord> first = (new ConditionRecord(records.replaceFirst("\\?", "."), format)).recursiveGenerateAllPossibilities(pattern);
             result.addAll(first);
+            result.addAll(second);
             return result;
         }
     }
