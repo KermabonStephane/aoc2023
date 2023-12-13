@@ -12,16 +12,20 @@ import java.util.stream.Collectors;
 public class Day13 {
     public long processPartOne(String s) throws IOException {
         List<HorizontalPattern> patterns = process(s);
-        patterns.stream().forEach(p -> {
-            System.out.println( p.getNumber() + " " + p.reverse().getNumber());
-        });
-        return patterns.stream().map(p -> p.getNumber()).collect(Collectors.summarizingLong(i -> i)).getSum()
-                + patterns.stream().map(p -> p.reverse()).map(p -> p.getNumber()).collect(Collectors.summarizingLong(i -> i)).getSum();
+//        patterns.stream().forEach(p -> {
+//            System.out.println( p.getNumber(false) + " " + p.reverse().getNumber(false));
+//        });
+        return patterns.stream().map(p ->  p.getNumber(false)).collect(Collectors.summarizingLong(i -> i)).getSum()
+                + patterns.stream().map(p -> p.reverse()).map(p -> p.getNumber(false)).collect(Collectors.summarizingLong(i -> i)).getSum();
     }
 
     public long processPartTwo(String s) throws IOException {
-        process(s);
-        return 0L;
+        List<HorizontalPattern> patterns = process(s);
+        patterns.stream().forEach(p -> {
+            System.out.println( p.getNumber(false) + " " + p.reverse().getNumber(false) + " " + p.getNumber(true) + " " + p.reverse().getNumber(true));
+        });
+        return patterns.stream().map(p -> p.getNumber(true) * 100).collect(Collectors.summarizingLong(i -> i)).getSum()
+                + patterns.stream().map(p -> p.reverse()).map(p -> p.getNumber(true)).collect(Collectors.summarizingLong(i -> i)).getSum();
     }
 
     private List<HorizontalPattern> process(final String filename) throws IOException {
@@ -31,7 +35,8 @@ public class Day13 {
             while (line != null) {
                 HorizontalPattern tmp = new HorizontalPattern();
                 while (line != null && !line.isEmpty()) {
-                    tmp.patterns.add(line.replaceAll("\\.", "0").replace("\\#", "1"));
+                    tmp.patterns.add(line.replaceAll("\\.", "0").replace("#", "1"));
+//                    tmp.patterns.add(line);
                     line = reader.readLine();
                 }
                 patterns.add(tmp);
