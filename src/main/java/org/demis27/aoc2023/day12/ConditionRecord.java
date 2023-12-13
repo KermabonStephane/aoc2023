@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ConditionRecord {
@@ -15,25 +14,23 @@ public class ConditionRecord {
 
     public long neededHashTag;
 
-    public Pattern pattern;
+//    public Pattern pattern;
 
     public ConditionRecord(String records, Long[] format, boolean withPattern) {
         this.records = records.replaceAll("\\.\\.", ".");
         this.format = format;
         neededHashTag = Arrays.stream(this.format).collect(Collectors.summarizingLong(i -> i)).getSum();
-        if (withPattern) {
-            StringBuilder regularExpression = new StringBuilder();
-            regularExpression.append("[\\.\\?]*");
-            for (int i = 0; i < format.length - 1; i++) {
-                regularExpression.append("[\\#\\?]{");
-                regularExpression.append(format[i]);
-                regularExpression.append("}[\\.\\?]+");
-            }
-            regularExpression.append("[\\#\\?]{");
-            regularExpression.append(format[format.length - 1]);
-            regularExpression.append("}[\\.\\?]*");
-            pattern = Pattern.compile(regularExpression.toString());
-        }
+//            StringBuilder regularExpression = new StringBuilder();
+//            regularExpression.append("[\\.\\?]*");
+//            for (int i = 0; i < format.length - 1; i++) {
+//                regularExpression.append("[\\#\\?]{");
+//                regularExpression.append(format[i]);
+//                regularExpression.append("}[\\.\\?]+");
+//            }
+//            regularExpression.append("[\\#\\?]{");
+//            regularExpression.append(format[format.length - 1]);
+//            regularExpression.append("}[\\.\\?]*");
+//            pattern = Pattern.compile(regularExpression.toString());
     }
 
     public ConditionRecord(String records, Long[] format) {
@@ -85,13 +82,22 @@ public class ConditionRecord {
     }
 
     public List<ConditionRecord> generateAllPossibilities() {
-        return recursiveGenerateAllPossibilities(pattern);
+        ConditionRecord conditionRecord = reducePattern();
+        if (conditionRecord != null) {
+            if (conditionRecord == this) {
+                return List.of(this);
+            }
+            else {
+                return conditionRecord.recursiveGenerateAllPossibilities();
+            }
+        }
+        return recursiveGenerateAllPossibilities();
     }
 
-    public List<ConditionRecord> recursiveGenerateAllPossibilities(Pattern pattern) {
-        if (!pattern.matcher(records).find()) {
-            return Collections.emptyList();
-        }
+    public List<ConditionRecord> recursiveGenerateAllPossibilities() {
+//        if (!pattern.matcher(records).find()) {
+//            return Collections.emptyList();
+//        }
         if (records.indexOf('?') < 0) {
             return List.of(this);
         }
@@ -99,11 +105,57 @@ public class ConditionRecord {
             return Collections.emptyList();
         } else {
             List<ConditionRecord> result = new ArrayList<>();
-            List<ConditionRecord> first = (new ConditionRecord(records.replaceFirst("\\?", "."), format)).recursiveGenerateAllPossibilities(pattern);
-            List<ConditionRecord> second = (new ConditionRecord(records.replaceFirst("\\?", "#"), format)).recursiveGenerateAllPossibilities(pattern);
+            List<ConditionRecord> first = (new ConditionRecord(records.replaceFirst("\\?", "."), format)).generateAllPossibilities();
+            List<ConditionRecord> second = (new ConditionRecord(records.replaceFirst("\\?", "#"), format)).generateAllPossibilities();
             result.addAll(second);
             result.addAll(first);
             return result;
         }
+    }
+
+    public ConditionRecord reducePattern() {
+        if (partialMatch(records, List.of(format[0]).toArray(Long[]::new)) > 0) {
+            ConditionRecord conditionRecord = new ConditionRecord(records.substring(records.indexOf('#') +  format[0].intValue()), Arrays.copyOfRange(format, 1, format.length));
+            return conditionRecord;
+        }
+        if (records.indexOf('?') < 0) {
+            return this;
+        } else if (records.charAt(0) == '.'
+                && records.indexOf('?') + 1 < records.length()) {
+            int matches = partialMatch(records, format);
+            if (matches > 0) {
+                ConditionRecord conditionRecord = new ConditionRecord(records.substring(records.indexOf('?') - 1), Arrays.asList(format).subList(matches, format.length).toArray(Long[]::new));
+                System.out.println("reduce " + this + " to " + conditionRecord);
+                return conditionRecord;
+            }
+        }
+        return null;
+    }
+
+    private int partialMatch(String records, Long[] format) {
+        String[] split = records
+                .replaceAll("\\.\\.", ".")
+                .replaceAll("\\.\\.", ".")
+                .replaceAll("\\.\\.", ".")
+                .replaceAll("\\.\\.", ".")
+                .split("\\.", -1);
+        split = Arrays.stream(split).filter(s -> !s.isEmpty()).toArray(String[]::new);
+        int result = 0;
+        for (int i = 0; i < split.length && i < format.length; i++) {
+            if (split[i].indexOf('?') < 0 && split[i].length() == format[i]) {
+                result++;
+            } else {
+                return result;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConditionRecord{" +
+                "records='" + records + '\'' +
+                ", format=" + Arrays.toString(format) +
+                '}';
     }
 }
