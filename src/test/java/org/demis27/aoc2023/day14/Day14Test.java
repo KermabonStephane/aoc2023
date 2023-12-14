@@ -11,14 +11,14 @@ public class Day14Test {
     void day14_part1_sample() throws IOException {
         Day14 day14 = new Day14();
         long result = day14.processPartOne("day14-part1-sample.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(136, result);
     }
 
     @Test
     void day14_part1() throws IOException {
         Day14 day14 = new Day14();
         long result = day14.processPartOne("day14.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(106990, result);
     }
 
     @Test
