@@ -51,26 +51,33 @@ public class Day14 {
 
     public long processPartTwo(String s) throws IOException {
         char[][] data = readTwo(s);
-//        moveToNorth(data);
-//        moveToWest(data);
-//        moveToSouth(data);
-//        moveToEast(data);
 //        printData(data);
 //        System.out.println("Init " + processValue(data));
 //        System.out.println("Start");
 //        printData(data);
-//        List<Long> values = new ArrayList<>();
-        for (long cycle = 0; cycle < 1000000000L; cycle++) {
-                moveToNorth(data);
-                moveToWest(data);
-                moveToSouth(data);
-                moveToEast(data);
+        for (int i = 0; i < 0; i++) {
+            moveToNorth(data);
+            moveToWest(data);
+            moveToSouth(data);
+            moveToEast(data);
+        }
+        List<Long> values = new ArrayList<>();
+        for (long cycle = 0; cycle < 1000000000L - 4L; cycle++) {
+            long previousValue = processValue(data);
+            moveToNorth(data);
+            moveToWest(data);
+            moveToSouth(data);
+            moveToEast(data);
 
-//                long value = processValue(data);
-//                if (values.size() > 5 && value == values.get(0)) {
-//                    return values.get((int) ((1000000000L - 4L) % values.size()));
-//                }
-//                values.add(value);
+            long value = processValue(data);
+//            if (values.size() > 5 && value == values.get(0)) {
+            if (values.contains(value) && values.indexOf(value) == values.indexOf(previousValue) - 1) {
+                for (int v = 0; v < values.size(); v++) {
+                    System.out.println(values.get(v));
+                }
+                return values.get((int) ((1000000000L) % values.size()));
+            }
+            values.add(value);
 //                System.out.println(cycle + " " + value);
 //            System.out.println(cycle+" 000 000");
         }
