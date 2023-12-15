@@ -48,7 +48,7 @@ public class Day14Test {
     void day14_part2() throws IOException {
         Day14 day14 = new Day14();
         long result = day14.processPartTwo("day14.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(100531, result);
     }
 
 }

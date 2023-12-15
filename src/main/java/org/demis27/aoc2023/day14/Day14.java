@@ -62,7 +62,7 @@ public class Day14 {
             moveToEast(data);
         }
         List<Long> values = new ArrayList<>();
-        for (long cycle = 0; cycle < 1000000000L - 4L; cycle++) {
+        for (long cycle = 0; cycle < 1000L - 4L; cycle++) {
             long previousValue = processValue(data);
             moveToNorth(data);
             moveToWest(data);
@@ -71,18 +71,22 @@ public class Day14 {
 
             long value = processValue(data);
 //            if (values.size() > 5 && value == values.get(0)) {
-            if (values.contains(value) && values.indexOf(value) == values.indexOf(previousValue) - 1) {
+
+            if (cycle > 120 && values.contains(value) && values.indexOf(value) == values.indexOf(previousValue) - 1) {
                 for (int v = 0; v < values.size(); v++) {
                     System.out.println(values.get(v));
                 }
-                return values.get((int) ((1000000000L) % values.size()));
+                return values.get((int) ((1000000000L) % values.size() + cycle));
             }
+
+
             values.add(value);
 //                System.out.println(cycle + " " + value);
 //            System.out.println(cycle+" 000 000");
         }
 //        System.out.println("Move");
 //        printData(data);
+        values.stream().forEach(v -> System.out.println(v));
         return processValue(data);
     }
 
