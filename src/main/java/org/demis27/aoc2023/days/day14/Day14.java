@@ -1,4 +1,4 @@
-package org.demis27.aoc2023.day14;
+package org.demis27.aoc2023.days.day14;
 
 import java.io.BufferedReader;
 import java.io.IOException;

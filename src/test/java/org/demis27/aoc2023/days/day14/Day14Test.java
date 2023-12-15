@@ -1,5 +1,6 @@
-package org.demis27.aoc2023.day14;
+package org.demis27.aoc2023.days.day14;
 
+import org.demis27.aoc2023.days.day14.Day14;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
