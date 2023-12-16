@@ -12,7 +12,6 @@ public class Day16Test {
     void day16_part1_sample() throws IOException {
         Day16 day16 = new Day16();
         long result = day16.processPartOne("day16-part1-sample.txt");
-        day16.printUpdated();
         Assertions.assertEquals(46, result);
     }
 
@@ -33,7 +32,7 @@ public class Day16Test {
     void day16_part2() throws IOException {
         Day16 day16 = new Day16();
         long result = day16.processPartTwo("day16.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(8185, result);
     }
 
 }

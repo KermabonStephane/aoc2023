@@ -3,6 +3,8 @@ package org.demis27.aoc2023.day16;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.demis27.aoc2023.day16.Direction.*;
+
 public class Tile {
 
     int row;
@@ -14,9 +16,7 @@ public class Tile {
 
     boolean energized = false;
 
-    int count = 0;
-
-    List<Character> froms = new ArrayList<>();
+    List<Direction> froms = new ArrayList<>();
 
     public Tile(int row, int column, char value) {
         this.row = row;
@@ -24,178 +24,170 @@ public class Tile {
         this.value = value;
         this.updatedValue = value;
     }
-public char[] direction(char from) {
-    char[] chars = directionI(from);
-//    System.out.print("tile " + row + " " + column + " from " + from + " to ");
-//    if (chars != null) {
-//        for (int i = 0; i < chars.length; i++) {
-//            System.out.print(chars[i]);
-//        }
-//        System.out.println("");
-//    }
-//    else { System.out.println("nowhere");}
-    return chars;
-}
 
-    public char[] directionI(char from) {
-        count++;
+    public Direction[] direction(Direction from) {
         energized = true;
         switch (from) {
-            case 'N':{switch (value) {
-                case '.' : if (froms.contains('S')) { return null;} else { break; }
-                case '\\' : if (froms.contains('E')) { return null; } else { break; }
-                case '/' :  if (froms.contains('W')) { return null; } else { break; }
-                case '-' :  if (froms.contains('S')) { return null; } else { break; }
-                case '|' : break;}
+            case NORTH: {
+                switch (value) {
+                    case '.', '-':
+                        if (froms.contains(SOUTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '\\':
+                        if (froms.contains(EAST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '/':
+                        if (froms.contains(WEST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '|':
+                        break;
+                }
                 break;
             }
-            case 'S': {switch (value) {
-                case '.' : if (froms.contains('N')) { return null;} else { break; }
-                case '\\' : if (froms.contains('W')) { return null; } else { break; }
-                case '/' :  if (froms.contains('E')) { return null; } else { break; }
-                case '-' :  break;
-                case '|' : if (froms.contains('N')) { return null; } else { break; }}
+            case SOUTH: {
+                switch (value) {
+                    case '.', '|':
+                        if (froms.contains(NORTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '\\':
+                        if (froms.contains(WEST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '/':
+                        if (froms.contains(EAST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '-':
+                        break;
+                }
                 break;
             }
-            case 'E': {switch (value) {
-                case '.' : if (froms.contains('W')) { return null;} else { break; }
-                case '\\' : if (froms.contains('N')) { return null; } else { break; }
-                case '/' :  if (froms.contains('S')) { return null; } else { break; }
-                case '-' :  break;
-                case '|' : if (froms.contains('W')) { return null; } else { break; }}
+            case EAST: {
+                switch (value) {
+                    case '.', '|':
+                        if (froms.contains(WEST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '\\':
+                        if (froms.contains(NORTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '/':
+                        if (froms.contains(SOUTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '-':
+                        break;
+                }
                 break;
             }
-            case 'W': {switch (value) {
-                case '.' : if (froms.contains('E')) { return null;} else { break; }
-                case '\\' : if (froms.contains('S')) { return null; } else { break; }
-                case '/' :  if (froms.contains('N')) { return null; } else { break; }
-                case '-' :  break;
-                case '|' : if (froms.contains('E')) { return null; } else { break; }}
+            case WEST: {
+                switch (value) {
+                    case '.', '|':
+                        if (froms.contains(EAST)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '\\':
+                        if (froms.contains(SOUTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '/':
+                        if (froms.contains(NORTH)) {
+                            return null;
+                        } else {
+                            break;
+                        }
+                    case '-':
+                        break;
+                }
                 break;
             }
         }
 
-        if (froms.contains(from) || updatedValue == '2') {
-            return null;
-        } else {
-            froms.add(from);
-        }
+        if (froms.contains(from) || updatedValue == '2') return null;
+        else froms.add(from);
         if (value == '.') {
             if (updatedValue == '.') {
                 switch (from) {
-                    case 'N':
-                        updatedValue = 'v';
-                        break;
-                    case 'S':
-                        updatedValue = '^';
-                        break;
-                    case 'W':
-                        updatedValue = '>';
-                        break;
-                    case 'E':
-                        updatedValue = '<';
-                        break;
+                    case NORTH -> updatedValue = 'v';
+                    case SOUTH -> updatedValue = '^';
+                    case WEST -> updatedValue = '>';
+                    case EAST -> updatedValue = '<';
                 }
-            } else if (updatedValue == 'v' ) {
-                if (from == 'S') {
-                    return null;
-                }
-                updatedValue = '2';
-            } else if (updatedValue == '^' ) {
-                if (from == 'N') {
-                    return null;
-                }
-                updatedValue = '2';
-            } else if (updatedValue == '>' ) {
-                if (from == 'E') {
-                    return null;
-                }
-                updatedValue = '2';
-            } else if (updatedValue == '<') {
-                if (from == 'W') {
-                    return null;
-                }
-                updatedValue = '2';
             }
             return madeDirection(from);
         }
         switch (from) {
-            case 'N':
-                switch (value) {
-                    case '/':
-                        return madeDirection('E');
-                    case '\\':
-                        return madeDirection('W');
-                    case '-': {
-                        if (froms.contains('S')) {
-                            return null;
-                        } else {
-                            return madeDirection('E', 'W');
-                        }
-                    }
-                    case '|':
-                        return madeDirection('N');
-                }
-            case 'S':
-                switch (value) {
-                    case '/':
-                        return madeDirection('W');
-                    case '\\':
-                        return madeDirection('E');
-                    case '-': {
-                        if (froms.contains('N')) {
-                            return null;
-                        } else {
-                            return madeDirection('E', 'W');
-                        }
-                    }
-                    case '|':
-                        return madeDirection('S');
-                }
-            case 'W':
-                switch (value) {
-                    case '/':
-                        return madeDirection('S');
-                    case '\\':
-                        return madeDirection('N');
-                    case '-':
-                        return madeDirection('W');
-                    case '|': {
-                        if (froms.contains('E')) {
-                            return null;
-                        } else {
-                            return madeDirection('N', 'S');
-                        }
-                    }
-                }
-            case 'E':
-                switch (value) {
-                    case '/':
-                        return madeDirection('N');
-                    case '\\':
-                        return madeDirection('S');
-                    case '-':
-                        return madeDirection('E');
-                    case '|': {
-                        if (froms.contains('W')) {
-                            return null;
-                        } else {
-                            return madeDirection('N', 'S');
-                        }
-                    }
-                }
+            case NORTH:
+                return switch (value) {
+                    case '/' -> madeDirection(EAST);
+                    case '\\' -> madeDirection(WEST);
+                    case '-' -> froms.contains(SOUTH) ? null : madeDirection(EAST, WEST);
+                    case '|' -> madeDirection(NORTH);
+                    default -> null;
+                };
+            case SOUTH:
+                return switch (value) {
+                    case '/' -> madeDirection(WEST);
+                    case '\\' -> madeDirection(EAST);
+                    case '-' -> froms.contains(NORTH) ? null : madeDirection(EAST, WEST);
+                    case '|' -> madeDirection(SOUTH);
+                    default -> null;
+                };
+            case WEST:
+                return switch (value) {
+                    case '/' -> madeDirection(SOUTH);
+                    case '\\' -> madeDirection(NORTH);
+                    case '-' -> madeDirection(WEST);
+                    case '|' -> froms.contains(EAST) ? null : madeDirection(NORTH, SOUTH);
+                    default -> null;
+                };
+            case EAST:
+                return switch (value) {
+                    case '/' -> madeDirection(NORTH);
+                    case '\\' -> madeDirection(SOUTH);
+                    case '-' -> madeDirection(EAST);
+                    case '|' -> froms.contains(WEST) ? null : madeDirection(NORTH, SOUTH);
+                    default -> null;
+                };
         }
         return null;
     }
 
-    public char[] madeDirection(char one) {
-        char[] result = new char[1];
+    public Direction[] madeDirection(Direction one) {
+        Direction[] result = new Direction[1];
         result[0] = one;
         return result;
     }
 
-    public char[] madeDirection(char one, char two) {
-        char[] result = new char[2];
+    public Direction[] madeDirection(Direction one, Direction two) {
+        Direction[] result = new Direction[2];
         result[0] = one;
         result[1] = two;
         return result;
