@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static org.demis27.aoc2023.day16.Direction.*;
+
 public class Day16 {
 
     public int size;
@@ -13,7 +15,7 @@ public class Day16 {
 
     public long processPartOne(String s) throws IOException {
         process(s);
-        getDirection(tiles[0][0], Direction.WEST);
+        getDirection(tiles[0][0], WEST);
 //        printEnergized();
         return countEnergized();
     }
@@ -23,25 +25,25 @@ public class Day16 {
         // North
         process(s);
         for (int column = 0; column < size; column++) {
-            getDirection(tiles[0][column], Direction.NORTH);
+            getDirection(tiles[0][column], NORTH);
             result = Math.max(result, countEnergized());
             process(s);
         }
         // South
         for (int column = 0; column < size; column++) {
-            getDirection(tiles[size- 1][column], Direction.SOUTH);
+            getDirection(tiles[size- 1][column], SOUTH);
             result = Math.max(result, countEnergized());
             process(s);
         }
         // East
         for (int row = 0; row < size; row++) {
-            getDirection(tiles[row][size - 1], Direction.EAST);
+            getDirection(tiles[row][size - 1], EAST);
             result = Math.max(result, countEnergized());
             process(s);
         }
         // West
         for (int row = 0; row < size; row++) {
-            getDirection(tiles[row][0], Direction.WEST);
+            getDirection(tiles[row][0], WEST);
             result = Math.max(result, countEnergized());
             process(s);
         }
@@ -66,16 +68,16 @@ public class Day16 {
         for (int tosIndex = 0; tosIndex < tos.length; tosIndex++) {
             switch (tos[tosIndex]) {
                 case NORTH -> {
-                    if (tile.row != size - 1) getDirection(tiles[tile.row + 1][tile.column], Direction.NORTH);
+                    if (tile.row != size - 1) getDirection(tiles[tile.row + 1][tile.column], NORTH);
                 }
                 case SOUTH -> {
-                    if (tile.row != 0) getDirection(tiles[tile.row - 1][tile.column], Direction.SOUTH);
+                    if (tile.row != 0) getDirection(tiles[tile.row - 1][tile.column], SOUTH);
                 }
                 case WEST -> {
-                    if (tile.column != size - 1) getDirection(tiles[tile.row][tile.column + 1], Direction.WEST);
+                    if (tile.column != size - 1) getDirection(tiles[tile.row][tile.column + 1], WEST);
                 }
                 case EAST -> {
-                    if (tile.column != 0) getDirection(tiles[tile.row][tile.column - 1], Direction.EAST);
+                    if (tile.column != 0) getDirection(tiles[tile.row][tile.column - 1], EAST);
                 }
             }
         }
