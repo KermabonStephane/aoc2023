@@ -12,7 +12,7 @@ public class Day17 {
 
     Block[][] blocks;
 
-    long currentMin = 103;
+    long currentMin = 110;
 
     public long processPartOne(String s) throws IOException {
         blocks = process(s);
@@ -35,7 +35,7 @@ public class Day17 {
             for (int i = 0; i < way.blocks.size(); i++) {
                 System.out.print(way.blocks.get(i));
             }
-            System.out.println("");
+//            System.out.println("");
             currentMin = Math.min(currentMin, currentLoss);
             return currentLoss;
         }
@@ -49,45 +49,45 @@ public class Day17 {
             return Long.MAX_VALUE;
         } else if (newDirections.size() == 1) {
             Block nextBlock = nextBlock(way, newDirections.get(0));
-//            if (way.blocks.contains(nextBlock)
+            if (way.blocks.contains(nextBlock)
 //                    || (way.totalLoss + nextBlock.loss >= nextBlock.totalLoss
 //                    && !way.directionsIfFull())
-//            ) {
-//                return Long.MAX_VALUE;
-//            } else {
-            Way newWay = way.clone();
-            newWay.addDirection(newDirections.get(0));
-            newWay.blocks.add(nextBlock);
-            newWay.totalLoss += nextBlock.loss;
-            nextBlock.totalLoss = Math.min(nextBlock.totalLoss, newWay.totalLoss);
-            return moveLava(newWay);
-//            }
+            ) {
+                return Long.MAX_VALUE;
+            } else {
+                Way newWay = way.clone();
+                newWay.addDirection(newDirections.get(0));
+                newWay.blocks.add(nextBlock);
+                newWay.totalLoss += nextBlock.loss;
+                nextBlock.totalLoss = Math.min(nextBlock.totalLoss, newWay.totalLoss);
+                return moveLava(newWay);
+            }
         } else if (newDirections.size() == 2) {
             List<Way> newWays = new ArrayList<>();
             Block nextBlockOne = nextBlock(way, newDirections.get(0));
-//            if (!way.blocks.contains(nextBlockOne)
+            if (!way.blocks.contains(nextBlockOne)
 //                    || (way.totalLoss + nextBlockOne.loss >= nextBlockOne.totalLoss
 //                    && !way.directionsIfFull())
-//                    ) {
-            Way newWayOne = way.clone();
-            newWayOne.addDirection(newDirections.get(0));
-            newWayOne.blocks.add(nextBlockOne);
-            newWayOne.totalLoss += nextBlockOne.loss;
-            nextBlockOne.totalLoss = Math.min(nextBlockOne.totalLoss, newWayOne.totalLoss);
-            newWays.add(newWayOne);
-//            }
+            ) {
+                Way newWayOne = way.clone();
+                newWayOne.addDirection(newDirections.get(0));
+                newWayOne.blocks.add(nextBlockOne);
+                newWayOne.totalLoss += nextBlockOne.loss;
+                nextBlockOne.totalLoss = Math.min(nextBlockOne.totalLoss, newWayOne.totalLoss);
+                newWays.add(newWayOne);
+            }
             Block nextBlockTwo = nextBlock(way, newDirections.get(1));
-//            if (!way.blocks.contains(nextBlockTwo)
+            if (!way.blocks.contains(nextBlockTwo)
 //                    || (way.totalLoss + nextBlockTwo.loss >= nextBlockTwo.totalLoss
 //                    && !way.directionsIfFull())
-//            ) {
-            Way newWayTwo = way.clone();
-            newWayTwo.addDirection(newDirections.get(1));
-            newWayTwo.blocks.add(nextBlockTwo);
-            newWayTwo.totalLoss += nextBlockTwo.loss;
-            nextBlockTwo.totalLoss = Math.min(nextBlockTwo.totalLoss, newWayTwo.totalLoss);
-            newWays.add(newWayTwo);
-//            }
+            ) {
+                Way newWayTwo = way.clone();
+                newWayTwo.addDirection(newDirections.get(1));
+                newWayTwo.blocks.add(nextBlockTwo);
+                newWayTwo.totalLoss += nextBlockTwo.loss;
+                nextBlockTwo.totalLoss = Math.min(nextBlockTwo.totalLoss, newWayTwo.totalLoss);
+                newWays.add(newWayTwo);
+            }
             if (newWays.isEmpty()) {
                 return Long.MAX_VALUE;
             } else if (newWays.size() == 1) {
@@ -100,41 +100,41 @@ public class Day17 {
         } else {
             List<Way> newWays = new ArrayList<>();
             Block nextBlockOne = nextBlock(way, newDirections.get(0));
-//            if (!way.blocks.contains(nextBlockOne)
+            if (!way.blocks.contains(nextBlockOne)
 //                    || (way.totalLoss + nextBlockOne.loss >= nextBlockOne.totalLoss
 //                    && !way.directionsIfFull())
-//            ) {
-            Way newWayOne = way.clone();
-            newWayOne.addDirection(newDirections.get(0));
-            newWayOne.blocks.add(nextBlockOne);
-            newWayOne.totalLoss += nextBlockOne.loss;
-            nextBlockOne.totalLoss = Math.min(nextBlockOne.totalLoss, newWayOne.totalLoss);
-            newWays.add(newWayOne);
-//            }
+            ) {
+                Way newWayOne = way.clone();
+                newWayOne.addDirection(newDirections.get(0));
+                newWayOne.blocks.add(nextBlockOne);
+                newWayOne.totalLoss += nextBlockOne.loss;
+                nextBlockOne.totalLoss = Math.min(nextBlockOne.totalLoss, newWayOne.totalLoss);
+                newWays.add(newWayOne);
+            }
             Block nextBlockTwo = nextBlock(way, newDirections.get(1));
-//            if (!way.blocks.contains(nextBlockTwo)
+            if (!way.blocks.contains(nextBlockTwo)
 //                    || (way.totalLoss + nextBlockTwo.loss >= nextBlockTwo.totalLoss
 //                    && !way.directionsIfFull())
-//            ) {
-            Way newWayTwo = way.clone();
-            newWayTwo.addDirection(newDirections.get(1));
-            newWayTwo.blocks.add(nextBlockTwo);
-            newWayTwo.totalLoss += nextBlockTwo.loss;
-            nextBlockTwo.totalLoss = Math.min(nextBlockTwo.totalLoss, newWayTwo.totalLoss);
-            newWays.add(newWayTwo);
-//            }
+            ) {
+                Way newWayTwo = way.clone();
+                newWayTwo.addDirection(newDirections.get(1));
+                newWayTwo.blocks.add(nextBlockTwo);
+                newWayTwo.totalLoss += nextBlockTwo.loss;
+                nextBlockTwo.totalLoss = Math.min(nextBlockTwo.totalLoss, newWayTwo.totalLoss);
+                newWays.add(newWayTwo);
+            }
             Block nextBlockThree = nextBlock(way, newDirections.get(2));
-//            if (!way.blocks.contains(nextBlockThree)
+            if (!way.blocks.contains(nextBlockThree)
 //                    || (way.totalLoss + nextBlockThree.loss >= nextBlockThree.totalLoss
 //                    && !way.directionsIfFull())
-//            ) {
-            Way newWayThree = way.clone();
-            newWayThree.addDirection(newDirections.get(2));
-            newWayThree.blocks.add(nextBlockThree);
-            newWayThree.totalLoss += nextBlockThree.loss;
-            nextBlockThree.totalLoss = Math.min(nextBlockThree.totalLoss, newWayThree.totalLoss);
-            newWays.add(newWayThree);
-//            }
+            ) {
+                Way newWayThree = way.clone();
+                newWayThree.addDirection(newDirections.get(2));
+                newWayThree.blocks.add(nextBlockThree);
+                newWayThree.totalLoss += nextBlockThree.loss;
+                nextBlockThree.totalLoss = Math.min(nextBlockThree.totalLoss, newWayThree.totalLoss);
+                newWays.add(newWayThree);
+            }
             if (newWays.isEmpty()) {
                 return Long.MAX_VALUE;
             } else if (newWays.size() == 1) {
@@ -177,13 +177,13 @@ public class Day17 {
             directions.remove(NORTH);
         } else if (way.getLastBlock().row == blocks.length - 1) {
             directions.remove(SOUTH);
-            directions.remove(WEST);
+//            directions.remove(WEST);
         }
         if (way.getLastBlock().column == 0) {
             directions.remove(WEST);
         } else if (way.getLastBlock().column == blocks.length - 1) {
             directions.remove(EAST);
-            directions.remove(NORTH);
+//            directions.remove(NORTH);
         }
 
         // detect loop
