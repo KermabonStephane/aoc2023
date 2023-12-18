@@ -16,12 +16,24 @@ public class Day18Test {
     }
 
     @Test
-    void day18_part1_sample2() throws IOException {
+    void day18_part1_very_sample() throws IOException {
         Day18 day18 = new Day18();
-        long result = day18.processPartOne("day18-part2-very-sample3.txt");
-        Assertions.assertEquals(16, result);
+        long result = day18.processPartOne("day18-part2-very-sample.txt");
+        Assertions.assertEquals(33, result);
     }
 
+    @Test
+    void day18_part1_very_sample2() throws IOException {
+        Day18 day18 = new Day18();
+        long result = day18.processPartOne("day18-part2-very-sample2.txt");
+        Assertions.assertEquals(73, result);
+    }
+    @Test
+    void day18_part1_very_sample3() throws IOException {
+        Day18 day18 = new Day18();
+        long result = day18.processPartOne("day18-part2-very-sample3.txt");
+        Assertions.assertEquals(40, result);
+    }
     @Test
     void day18_part1() throws IOException {
         Day18 day18 = new Day18();
@@ -37,17 +49,30 @@ public class Day18Test {
     }
 
     @Test
-    void day18_part2_sample2() throws IOException {
+    void day18_part2_very_sample() throws IOException {
         Day18 day18 = new Day18();
         long result = day18.processPartTwo("day18-part2-very-sample3.txt");
-        Assertions.assertEquals(16, result);
+        Assertions.assertEquals(40, result);
     }
 
+    @Test
+    void day18_part2_very_sample2() throws IOException {
+        Day18 day18 = new Day18();
+        long result = day18.processPartTwo("day18-part2-very-sample2.txt");
+        Assertions.assertEquals(78, result);
+    }
+
+    @Test
+    void day18_part2_very_sample3() throws IOException {
+        Day18 day18 = new Day18();
+        long result = day18.processPartTwo("day18-part2-very-sample3.txt");
+        Assertions.assertEquals(40, result);
+    }
     @Test
     void day18_part2() throws IOException {
         Day18 day18 = new Day18();
         long result = day18.processPartTwo("day18.txt");
-        Assertions.assertEquals(0, result);
+        Assertions.assertEquals(54058824661845L, result);
     }
 
 }

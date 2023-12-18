@@ -56,18 +56,18 @@ public class Day18 {
                     break;
             }
         }
-        for (int row = 0; row < map.length; row++) {
-            System.out.println(map[row]);
-        }
+//        for (int row = 0; row < map.length; row++) {
+//            System.out.println(map[row]);
+//        }
         long count = 0;
         for (int row = 0; row < map.length; row++) {
             boolean up = false;
             boolean down = false;
             boolean inside = false;
-            System.out.println("");
+//            System.out.println("");
             for (int column = 0; column < map.length; column++) {
                 if (map[row][column] == '#') {
-                    System.out.print('#');
+//                    System.out.print('#');
                     count++;
                     if (map[row][column - 1] == '.' && map[row - 1][column] == '#' && map[row + 1][column] == '#') {
                         inside = !inside;
@@ -89,9 +89,9 @@ public class Day18 {
                     down = false;
                     if (inside) {
                         count++;
-                        System.out.print('#');
+//                        System.out.print('#');
                     } else {
-                        System.out.print('.');
+//                        System.out.print('.');
                     }
                 }
             }
