@@ -1,6 +1,6 @@
 package org.demis27.aoc2023.day19;
 
-public class FunctionRule implements Rule{
+public class FunctionRule implements Rule {
 
     public DataType type;
 
@@ -31,9 +31,18 @@ public class FunctionRule implements Rule{
     public Workflow getNext(Part part) {
         if (operator == '>') {
             return (part.getData(type).value > value) ? workflow : null;
-        }
-        else {
+        } else {
             return (part.getData(type).value < value) ? workflow : null;
         }
+    }
+
+    @Override
+    public String getWorkflowName() {
+        return workflowName;
+    }
+
+    @Override
+    public void setWorkflow(Workflow w) {
+        this.workflow = w;
     }
 }

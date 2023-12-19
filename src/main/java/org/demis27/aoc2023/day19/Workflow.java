@@ -11,17 +11,21 @@ public class Workflow {
 
     // px{a<2006:qkq,m>2090:A,rfg}
     public Workflow(String line) {
-        String[] split = line.substring(0, line.length() - 1).split("\\{");
-        name = split[0];
-        String[] splitRule = split[1].split(",");
-        for (int i = 0; i < splitRule.length; i++) {
-            if (splitRule[i].contains(":")) {
-                rules.add(new FunctionRule(splitRule[i]));
-            }
-            else {
-                rules.add(new DirectRule(splitRule[i]));
-            }
+        if (line.length() == 1) {
+            name = line;
+        }
+        else {
+            String[] split = line.substring(0, line.length() - 1).split("\\{");
+            name = split[0];
+            String[] splitRule = split[1].split(",");
+            for (int i = 0; i < splitRule.length; i++) {
+                if (splitRule[i].contains(":")) {
+                    rules.add(new FunctionRule(splitRule[i]));
+                } else {
+                    rules.add(new DirectRule(splitRule[i]));
+                }
 
+            }
         }
     }
 

@@ -14,4 +14,15 @@ public class DirectRule implements Rule{
     public Workflow getNext(Part part) {
         return workflow;
     }
+
+    @Override
+    public String getWorkflowName() {
+        return workflowName;
+    }
+
+    @Override
+    public void setWorkflow(Workflow w) {
+        this.workflow = w;
+    }
+
 }
