@@ -3,6 +3,7 @@ package org.demis27.aoc2023.day18;
 public class Wall implements Comparable<Wall> {
 
     // simple true, double false
+    // if simple we change the
     boolean simple;
 
     long pos;
