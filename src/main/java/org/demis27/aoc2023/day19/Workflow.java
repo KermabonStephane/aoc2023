@@ -9,6 +9,9 @@ public class Workflow {
     public String name;
     public List<Rule> rules = new ArrayList<>();
 
+    public Workflow() {
+    }
+
     // px{a<2006:qkq,m>2090:A,rfg}
     public Workflow(String line) {
         if (line.length() == 1) {
@@ -33,4 +36,21 @@ public class Workflow {
         return rules.stream().map(rule -> rule.getNext(part)).filter(Objects::nonNull).findFirst().get();
     }
 
+    public List<PartSet> execute(PartSet initial) {
+        List<PartSet> result = new ArrayList<>(rules.size());
+        PartSet currentPartSet = initial;
+        int ruleIndex = 0;
+        while (ruleIndex < rules.size()) {
+            List<PartSet> execute = rules.get(ruleIndex).execute(currentPartSet);
+            if (execute.size() == 1) {
+                result.add(execute.get(0));
+            }
+            else {
+                result.add(execute.get(0));
+                currentPartSet = execute.get(1);
+            }
+            ruleIndex++;
+        }
+        return result;
+    }
 }

@@ -35,8 +35,32 @@ public class Day19 {
     }
 
     public long processPartTwo(String s) throws IOException {
-        process(s);
-        return 0L;
+        Pair<List<Workflow>, List<Part>> process = process(s);
+        process.getValue0().add(new Workflow("A"));
+        process.getValue0().add(new Workflow("R"));
+        Map<String, Workflow> map = new HashMap<>(process.getValue0().size());
+        connectWorkflows(process.getValue0(), map);
+
+        PartSet initial = new PartSet(map.get("in"), new PartRange(1, 4000), new PartRange(1, 4000), new PartRange(1, 4000), new PartRange(1, 4000));
+
+        execute(initial);
+
+        return execute(initial).stream()
+                .filter(p -> p.workflow.name.equals("A"))
+                .map(p -> (p.x.end - p.x.start + 1) * (p.m.end - p.m.start + 1) * (p.a.end - p.a.start + 1) * (p.s.end - p.s.start + 1))
+                .reduce(0L, (a, b) -> a + b);
+
+    }
+
+    public List<PartSet> execute(PartSet partSet) {
+        List<PartSet> result = new ArrayList<>();
+        if (partSet.workflow.name == "A" || partSet.workflow.name == "R") {
+            result.add(partSet);
+        } else {
+            List<PartSet> execute = partSet.workflow.execute(partSet);
+            result.addAll(execute.stream().flatMap(p -> execute(p).stream()).toList());
+        }
+        return result;
     }
 
     private Pair<List<Workflow>, List<Part>> process(final String filename) throws IOException {
@@ -54,8 +78,7 @@ public class Day19 {
                 }
                 if (readWorkflow && !line.isEmpty()) {
                     workflows.add(new Workflow(line));
-                }
-                else if (!line.isEmpty()){
+                } else if (!line.isEmpty()) {
                     parts.add(new Part(line));
                 }
                 line = reader.readLine();
