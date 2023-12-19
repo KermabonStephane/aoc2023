@@ -169,6 +169,7 @@ public class Day17 {
         int currentColumn = 0;
 
         // Step one
+        // use blocks total loss
         int[] diskstra = new int[blocks.length * blocks.length];
         boolean[] marks = new boolean[blocks.length * blocks.length];
         for (int column = 0; column < blocks.length; column++) {
@@ -177,7 +178,9 @@ public class Day17 {
             }
         }
         diskstra[0] = 0;
+        // use blocks mark
         marks[0] = true;
+        // stack way
         int totalLoss = 0;
         while (currentRow != blocks.length - 1 && currentColumn != blocks.length - 1) {
             List<Direction> directions = getDirection(currentRow, currentColumn, lastDirections);
@@ -202,6 +205,7 @@ public class Day17 {
                 diskstra[(currentColumn - 1) + (currentRow * (blocks.length))] = newWest;
             }
 
+            // min and index of all blocks
             int min = Stream.of(newNorth, newEast, newWest, newSouth).min(Integer::compareTo).get();
             if (newEast == min) {
                 currentColumn++;
