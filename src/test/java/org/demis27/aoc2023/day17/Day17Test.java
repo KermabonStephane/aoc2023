@@ -8,9 +8,16 @@ import java.io.IOException;
 public class Day17Test {
 
     @Test
+    void day17_part1_very_sample() throws IOException {
+        Day17 day17 = new Day17();
+        long result = day17.processPartOneDijkstra("day17-part1-sample.txt");
+        Assertions.assertEquals(102, result);
+    }
+
+    @Test
     void day17_part1_sample() throws IOException {
         Day17 day17 = new Day17();
-        long result = day17.processPartOne("day17-part1-sample.txt");
+        long result = day17.processPartOneDijkstra("day17-part1-sample.txt");
         Assertions.assertEquals(102, result);
     }
 

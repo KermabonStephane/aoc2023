@@ -1,6 +1,7 @@
 package org.demis27.aoc2023.day17;
 
-public enum Direction {
+public enum Direction implements Comparable<Direction> {
 
-    NORTH, SOUTH, WEST, EAST;
+    SOUTH, EAST, NORTH, WEST
+
 }
