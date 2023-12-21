@@ -20,8 +20,10 @@ public class ModuleConfiguration {
     public Pulse pushButton(long i) {
         queue.add(new Triplet<>(new ButtonModule(), Pulse.LOW, broadcaster));
         Triplet<Module, Pulse, Module> current = queue.peek();
+        long count = 0;
         while (!queue.isEmpty()) {
             current = queue.poll();
+            count++;
 //            System.out.println(current.getValue0() + " -" + current.getValue1() + "-> " + current.getValue2().name);
             if (current.getValue1() == Pulse.LOW) {
                 lowOPulseNumber++;
@@ -32,6 +34,7 @@ public class ModuleConfiguration {
                 queue.add(next);
             });
         }
+        System.out.println(count);
         return current.getValue1();
     }
 
