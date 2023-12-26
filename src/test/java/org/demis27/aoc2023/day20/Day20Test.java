@@ -42,4 +42,17 @@ public class Day20Test {
         Assertions.assertEquals(0, result);
     }
 
+    @Test
+    void day20_part2_dv() throws IOException {
+        Day20 day20 = new Day20();
+        long result = day20.processPartTwo("day20-dv.txt");
+        Assertions.assertEquals(0, result);
+    }
+
+    @Test
+    void day20_part2_lf() throws IOException {
+        Day20 day20 = new Day20();
+        long result = day20.processPartTwo("day20-lf.txt");
+        Assertions.assertEquals(0, result);
+    }
 }

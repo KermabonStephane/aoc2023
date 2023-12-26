@@ -1,0 +1,17 @@
+%dx -> jx, vs
+%bv -> ml, jx
+broadcaster -> dv
+%jv -> xc
+%sm -> jv
+%dv -> jx, sm
+%xc -> dx
+%vs -> qm, jx
+%bt -> jx
+&xm -> dh
+%kf -> bv
+&jx -> sm, jv, xc, qm, dv, nh, kf
+%qm -> kf
+%ml -> qb, jx
+&nh -> dh
+%qb -> bt, jx
+&dh -> rx

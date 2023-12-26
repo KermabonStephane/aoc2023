@@ -14,9 +14,9 @@ public class FinalModule extends Module{
 
     @Override
     public List<Triplet<Module, Pulse, Module>> pulse(Module source, Pulse pulse, Module target, long i) {
-//        if (pulse == Pulse.LOW) {
-//            System.out.println("final " + pulse + " " + i);
-//        }
+        if (pulse == Pulse.LOW) {
+            System.out.println("final " + pulse + " " + i);
+        }
         return Collections.emptyList();
     }
 }

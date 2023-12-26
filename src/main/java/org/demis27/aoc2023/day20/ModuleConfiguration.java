@@ -34,7 +34,7 @@ public class ModuleConfiguration {
                 queue.add(next);
             });
         }
-        System.out.println(count);
+//        System.out.println(count);
         return current.getValue1();
     }
 
